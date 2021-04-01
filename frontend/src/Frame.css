@@ -1,0 +1,32 @@
+.messages {
+  margin: 0.5em;
+}
+.message {
+  border-bottom: 1px solid #888;
+  padding: 0.5rem 0;
+}
+.control {
+  font-weight: bold;
+}
+
+.message > span.name {
+  color:crimson;
+}
+.message:not(.control) > span.name::after {
+  color: black;
+  content: "＞";
+}
+.message.control > span.name::after {
+  content: "　";  
+}
+.message > span.timestamp {
+  float: right;
+  font-weight: normal;
+  color: #888;
+}
+.message > span.timestamp::before {
+  content: "[";
+}
+.message > span.timestamp::after {
+  content: "]";
+}
