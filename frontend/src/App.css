@@ -5,17 +5,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .message-wrapper {
   width: 100%;
+  align-items: flex-end;
   display: flex;
+  margin: 10px;
 }
 
 .my-message-wrapper {
   width: 100%;
-  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: row-reverse;
   display: flex;
+  margin: 10px;
 }
 
 .message {
@@ -24,4 +30,8 @@
   width: auto;
   max-width: 200px;
   padding: 10px;
+}
+
+.time {
+  margin: 0 5px -5px;
 }
