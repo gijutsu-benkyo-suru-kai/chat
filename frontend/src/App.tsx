@@ -8,8 +8,8 @@ function App() {
         <div className="message-wrapper">
           <div className="message">あ〜〜〜〜〜</div>
         </div>
-        <div className="message-wrapper">
-          <div className="my-message">う〜〜〜</div>
+        <div className="my-message-wrapper">
+          <div className="message">う〜〜〜</div>
         </div>
         <div className="message-wrapper">
           <div className="message">

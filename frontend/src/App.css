@@ -9,7 +9,13 @@
 
 .message-wrapper {
   width: 100%;
-  width: auto;
+  display: flex;
+}
+
+.my-message-wrapper {
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
 }
 
 .message {
@@ -18,12 +24,4 @@
   width: auto;
   max-width: 200px;
   padding: 10px;
-}
-
-.my-message {
-  border: 4px solid slategray;
-  border-radius: 10px;
-  max-width: 200px;
-  padding: 10px;
-  margin-left: auto;
 }
