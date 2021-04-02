@@ -1,4 +1,3 @@
-import { time } from 'node:console'
 import React from 'react'
 import './App.css'
 
