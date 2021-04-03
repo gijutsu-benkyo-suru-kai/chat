@@ -10,6 +10,7 @@ type Message = {
 
 type OnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => void
 type OnClickHandler = (event: React.MouseEvent) => void
+type OnKeyPressHandler = (event: React.KeyboardEvent) => void
 
 
 
@@ -28,11 +29,13 @@ function InputBar(props: {
   value: string
   onChange: OnChangeHandler
   onClickSend: OnClickHandler
+  onKeyPress: OnKeyPressHandler
 }) {
+  // REF: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
   return (
     <div className="input-bar">
       <div className="input-wrapper">
-        <input type="text" name="text" id="text" placeholder="メッセージを入力" value={props.value} onChange={props.onChange} />
+        <input type="text" name="text" id="text" placeholder="メッセージを入力" value={props.value} onChange={props.onChange} onKeyPress={props.onKeyPress} />
       </div>
       <div className="material-icons" onClick={props.onClickSend}>send</div>
     </div>
@@ -64,8 +67,7 @@ function App() {
     },
   ])
 
-  const handleChangeText: OnChangeHandler = (e) => setText(e.target.value)
-  const handleClickSend: OnClickHandler = () => {
+  const pushMessage = () => {
     setMessageList([
       ...messageList,
       {
@@ -79,6 +81,11 @@ function App() {
     setText("")
   }
 
+  const handleChangeText: OnChangeHandler = (e) => setText(e.target.value)
+  const handleClickSend: OnClickHandler = pushMessage
+  const handleEnter: OnKeyPressHandler = (e) => (e.code === "Enter") && pushMessage()
+
+
   return (
     <div className="App">
       <div className="chat-wrapper">
@@ -86,7 +93,7 @@ function App() {
           <MessageWrapper key={index} message={message} myUserId={myUserId} />
         ))}
       </div>
-      <InputBar value={text} onChange={handleChangeText} onClickSend={handleClickSend} />
+      <InputBar value={text} onChange={handleChangeText} onClickSend={handleClickSend} onKeyPress={handleEnter} />
     </div>
   )
 }
