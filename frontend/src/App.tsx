@@ -9,27 +9,8 @@ type Message = {
 }
 
 type OnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => void
+type OnClickHandler = (event: React.MouseEvent) => void
 
-const messageList: Message[] = [
-  {
-    userId: 2,
-    userName: 'たろう',
-    content: 'あ〜〜〜〜〜',
-    time: 1617371835000,
-  },
-  {
-    userId: 1,
-    userName: 'じろう',
-    content: 'う〜〜〜',
-    time: 1617372835000,
-  },
-  {
-    userId: 2,
-    userName: 'たろう',
-    content: '画像が入る',
-    time: 1617373835000,
-  },
-]
 
 
 function MessageWrapper(props: { message: Message, myUserId: number }) {
@@ -46,13 +27,14 @@ function MessageWrapper(props: { message: Message, myUserId: number }) {
 function InputBar(props: {
   value: string
   onChange: OnChangeHandler
+  onClickSend: OnClickHandler
 }) {
   return (
     <div className="input-bar">
       <div className="input-wrapper">
         <input type="text" name="text" id="text" placeholder="メッセージを入力" value={props.value} onChange={props.onChange} />
       </div>
-      <div className="material-icons">send</div>
+      <div className="material-icons" onClick={props.onClickSend}>send</div>
     </div>
   )
 }
@@ -61,8 +43,41 @@ function App() {
   const myUserId = 1
 
   const [text, setText] = useState("")
+  const [messageList, setMessageList] = useState([
+    {
+      userId: 2,
+      userName: 'たろう',
+      content: 'あ〜〜〜〜〜',
+      time: 1617371835000,
+    },
+    {
+      userId: 1,
+      userName: 'じろう',
+      content: 'う〜〜〜',
+      time: 1617372835000,
+    },
+    {
+      userId: 2,
+      userName: 'たろう',
+      content: '画像が入る',
+      time: 1617373835000,
+    },
+  ])
 
   const handleChangeText: OnChangeHandler = (e) => setText(e.target.value)
+  const handleClickSend: OnClickHandler = () => {
+    setMessageList([
+      ...messageList,
+      {
+        userId: myUserId,
+        userName: "じろう",
+        content: text,
+        time: Number(new Date())
+      }
+    ])
+    // clear input value
+    setText("")
+  }
 
   return (
     <div className="App">
@@ -71,7 +86,7 @@ function App() {
           <MessageWrapper key={index} message={message} myUserId={myUserId} />
         ))}
       </div>
-      <InputBar value={text} onChange={handleChangeText} />
+      <InputBar value={text} onChange={handleChangeText} onClickSend={handleClickSend} />
     </div>
   )
 }
