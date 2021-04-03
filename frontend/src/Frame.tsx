@@ -1,36 +1,21 @@
+import React, { useState } from "react"
+import useInterval from "use-interval"
 import "./Frame.css"
 
 interface Message {
   username: string
   type: "Enter" | "Leave" | "Content"
   timestamp: number
-  content?: string
+  content: string
 }
 
-const messages: Message[] = [
-  {
-    username: "名無し",
-    type: "Enter",
-    timestamp: 1617279200000,
-  },
-  {
-    username: "名無し",
-    type: "Content",
-    content: "こんちは",
-    timestamp: 1617279302000
-  },
-  {
-    username: "名無し",
-    type: "Content",
-    content: "誰もいないんか…",
-    timestamp: 1617279304000
-  },
-  {
-    username: "名無し",
-    type: "Leave",
-    timestamp: 1617279304000
-  }
-]
+function isMessage(obj: any): obj is Message {
+  return typeof obj === "object"
+    && typeof obj.username === "string"
+    && typeof obj.type === "string" && (obj.type === "Enter" || obj.type === "Leave" || obj.type === "Content")
+    && typeof obj.timestamp === "number"
+    && typeof obj.content === "string"
+}
 
 function toDateString(timestamp: number): string {
   return (new Date(timestamp)).toLocaleString()
@@ -61,8 +46,17 @@ function MessageDom(message: Message) {
   )
 }
 
+
 function Frame() {
-  messages.reverse()
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  // fetch("/messages")
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     setMessages(response as Message[])
+  //   })
+  // useInterval(() => fetchMessages(setMessages), 5000)
+
   return (
     <div className="messages">
       {messages.map((message: Message) => MessageDom(message))}
