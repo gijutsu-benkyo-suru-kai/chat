@@ -1,4 +1,5 @@
 .App {
+  background-color: lightblue;
 }
 
 .chat-wrapper {
@@ -7,6 +8,7 @@
   align-items: center;
   max-width: 500px;
   margin: 0 auto;
+  padding: 10px;
 }
 
 .message-wrapper {
@@ -25,13 +27,19 @@
 }
 
 .message {
-  border: 4px solid slategray;
+  /* border: 4px solid slategray; */
+  background-color: white;
   border-radius: 10px;
   width: auto;
   max-width: 200px;
   padding: 10px;
 }
 
+.my-message-wrapper > .message {
+  background-color: lawngreen;
+}
+
 .time {
+  font-size: 0.8rem;
   margin: 0 5px -5px;
 }
