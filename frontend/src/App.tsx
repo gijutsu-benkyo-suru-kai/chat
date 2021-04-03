@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import './App.css'
 
 type Message = {
@@ -6,6 +7,8 @@ type Message = {
   content: string
   time: number
 }
+
+type OnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => void
 
 const messageList: Message[] = [
   {
@@ -40,11 +43,14 @@ function MessageWrapper(props: { message: Message, myUserId: number }) {
   )
 }
 
-function InputBar(props: {}) {
+function InputBar(props: {
+  value: string
+  onChange: OnChangeHandler
+}) {
   return (
     <div className="input-bar">
       <div className="input-wrapper">
-        <input type="text" name="text" id="text" placeholder="メッセージを入力" />
+        <input type="text" name="text" id="text" placeholder="メッセージを入力" value={props.value} onChange={props.onChange} />
       </div>
       <div className="material-icons">send</div>
     </div>
@@ -54,6 +60,10 @@ function InputBar(props: {}) {
 function App() {
   const myUserId = 1
 
+  const [text, setText] = useState("")
+
+  const handleChangeText: OnChangeHandler = (e) => setText(e.target.value)
+
   return (
     <div className="App">
       <div className="chat-wrapper">
@@ -61,7 +71,7 @@ function App() {
           <MessageWrapper key={index} message={message} myUserId={myUserId} />
         ))}
       </div>
-      <InputBar />
+      <InputBar value={text} onChange={handleChangeText} />
     </div>
   )
 }
