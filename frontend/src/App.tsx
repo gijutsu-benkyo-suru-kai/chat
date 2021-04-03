@@ -1,4 +1,3 @@
-import React from 'react'
 import './App.css'
 
 type Message = {
@@ -41,6 +40,17 @@ function MessageWrapper(props: { message: Message, myUserId: number }) {
   )
 }
 
+function InputBar(props: {}) {
+  return (
+    <div className="input-bar">
+      <div className="input-wrapper">
+        <input type="text" name="text" id="text" placeholder="メッセージを入力" />
+      </div>
+      <div className="material-icons">send</div>
+    </div>
+  )
+}
+
 function App() {
   const myUserId = 1
 
@@ -51,6 +61,7 @@ function App() {
           <MessageWrapper key={index} message={message} myUserId={myUserId} />
         ))}
       </div>
+      <InputBar />
     </div>
   )
 }
