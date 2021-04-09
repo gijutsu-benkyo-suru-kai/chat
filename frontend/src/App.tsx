@@ -59,7 +59,6 @@ function App() {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(text)
     if (text === '') return
     setMessageList([
       ...messageList,
