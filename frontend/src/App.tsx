@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 
 type Message = {
@@ -8,7 +8,7 @@ type Message = {
   time: number
 }
 
-const messageList: Message[] = [
+const defaultMessageList: Message[] = [
   {
     userId: 2,
     userName: 'たろう',
@@ -29,19 +29,19 @@ const messageList: Message[] = [
   },
 ]
 
-function MessageWrapper(message: Message, myUserId: number, index: number) {
-  const time = new Date(message.time)
-  if (message.userId === myUserId) {
+function MessageWrapper(props: { message: Message; myUserId: number }) {
+  const time = new Date(props.message.time)
+  if (props.message.userId === props.myUserId) {
     return (
-      <div className="my-message-wrapper" key={index}>
-        <div className="message">{message.content}</div>
+      <div className="my-message-wrapper">
+        <div className="message">{props.message.content}</div>
         <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
       </div>
     )
   } else {
     return (
-      <div className="message-wrapper" key={index}>
-        <div className="message">{message.content}</div>
+      <div className="message-wrapper">
+        <div className="message">{props.message.content}</div>
         <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
       </div>
     )
@@ -50,11 +50,36 @@ function MessageWrapper(message: Message, myUserId: number, index: number) {
 
 function App() {
   const myUserId = 1
+  const [text, setText] = useState('')
+
+  const [messageList, setMessageList] = useState(defaultMessageList)
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value)
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (text === '') return
+    setMessageList([
+      ...messageList,
+      {
+        userId: myUserId,
+        content: text,
+        time: Number(new Date()),
+        userName: 'じろう',
+      },
+    ])
+    setText('')
+  }
 
   return (
     <div className="App">
       <div className="chat-wrapper">
-        {messageList.map((message, index) => MessageWrapper(message, myUserId, index))}
+        {messageList.map((message, index) => (
+          <MessageWrapper message={message} myUserId={myUserId} key={index} />
+        ))}
+        <textarea className="input-form" value={text} onChange={handleChange} />
+        <button onClick={handleClick}>送信</button>
       </div>
     </div>
   )
