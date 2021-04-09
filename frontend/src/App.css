@@ -35,3 +35,14 @@
 .time {
   margin: 0 5px -5px;
 }
+
+.input-form {
+  width: 100%;
+  line-height: 1.5;
+  height: 1.5em;
+  resize: vertical;
+}
+
+.input-demo {
+  white-space: pre-line;
+}

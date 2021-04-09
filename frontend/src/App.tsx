@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 
 type Message = {
@@ -29,10 +29,7 @@ const messageList: Message[] = [
   },
 ]
 
-function MessageWrapper(props: {
-  message: Message
-  myUserId: number
-}) {
+function MessageWrapper(props: { message: Message; myUserId: number }) {
   const time = new Date(props.message.time)
   if (props.message.userId === props.myUserId) {
     return (
@@ -53,6 +50,11 @@ function MessageWrapper(props: {
 
 function App() {
   const myUserId = 1
+  const [text, setText] = useState('')
+  
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value)
+  }
 
   return (
     <div className="App">
@@ -60,6 +62,8 @@ function App() {
         {messageList.map((message, index) => (
           <MessageWrapper message={message} myUserId={myUserId} key={index} />
         ))}
+        <textarea className="input-form" onChange={handleChange}/>
+        <div className="input-demo">{text}</div>
       </div>
     </div>
   )
