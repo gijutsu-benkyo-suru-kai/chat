@@ -29,19 +29,22 @@ const messageList: Message[] = [
   },
 ]
 
-function MessageWrapper(message: Message, myUserId: number, index: number) {
-  const time = new Date(message.time)
-  if (message.userId === myUserId) {
+function MessageWrapper(props: {
+  message: Message
+  myUserId: number
+}) {
+  const time = new Date(props.message.time)
+  if (props.message.userId === props.myUserId) {
     return (
-      <div className="my-message-wrapper" key={index}>
-        <div className="message">{message.content}</div>
+      <div className="my-message-wrapper">
+        <div className="message">{props.message.content}</div>
         <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
       </div>
     )
   } else {
     return (
-      <div className="message-wrapper" key={index}>
-        <div className="message">{message.content}</div>
+      <div className="message-wrapper">
+        <div className="message">{props.message.content}</div>
         <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
       </div>
     )
@@ -54,7 +57,9 @@ function App() {
   return (
     <div className="App">
       <div className="chat-wrapper">
-        {messageList.map((message, index) => MessageWrapper(message, myUserId, index))}
+        {messageList.map((message, index) => (
+          <MessageWrapper message={message} myUserId={myUserId} key={index} />
+        ))}
       </div>
     </div>
   )
