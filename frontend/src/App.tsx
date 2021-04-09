@@ -8,7 +8,7 @@ type Message = {
   time: number
 }
 
-const messageList: Message[] = [
+const defaultMessageList: Message[] = [
   {
     userId: 2,
     userName: 'たろう',
@@ -51,9 +51,26 @@ function MessageWrapper(props: { message: Message; myUserId: number }) {
 function App() {
   const myUserId = 1
   const [text, setText] = useState('')
-  
+
+  const [messageList, setMessageList] = useState(defaultMessageList)
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value)
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(text)
+    if (text === '') return
+    setMessageList([
+      ...messageList,
+      {
+        userId: myUserId,
+        content: text,
+        time: Number(new Date()),
+        userName: 'じろう',
+      },
+    ])
+    setText('')
   }
 
   return (
@@ -62,8 +79,8 @@ function App() {
         {messageList.map((message, index) => (
           <MessageWrapper message={message} myUserId={myUserId} key={index} />
         ))}
-        <textarea className="input-form" onChange={handleChange}/>
-        <div className="input-demo">{text}</div>
+        <textarea className="input-form" value={text} onChange={handleChange} />
+        <button onClick={handleClick}>送信</button>
       </div>
     </div>
   )
