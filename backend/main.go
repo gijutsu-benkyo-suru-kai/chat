@@ -1,34 +1,45 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 )
 
+type Message struct {
+	UserId   uint   `json:"userId"`
+	UserName string `json:"userName"`
+	Content  string `json:"content"`
+	Time     uint64 `json:"time"`
+}
+
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `[
-  {
-    "userId": 2,
-    "userName": "たろう",
-    "content": "あ〜〜〜〜〜",
-    "time": 1617371835000
-  },
-  {
-    "userId": 1,
-    "userName": "じろう",
-    "content": "う〜〜〜",
-    "time": 1617372835000
-  },
-  {
-    "userId": 2,
-    "userName": "たろう",
-    "content": "画像が入る",
-    "time": 1617373835000
-  }
-]`)
+		messageList := []Message{
+			{
+				UserId:   2,
+				UserName: "たろう",
+				Content:  "あ〜〜〜〜〜",
+				Time:     1617371835000,
+			},
+			{
+				UserId:   1,
+				UserName: "じろう",
+				Content:  "う〜〜〜",
+				Time:     1617372835000,
+			},
+			{
+				UserId:   2,
+				UserName: "たろう",
+				Content:  "画像が入る",
+				Time:     1617373835000,
+			},
+		}
+		messageJson, _ := json.Marshal(messageList)
+
+		fmt.Fprintf(w, string(messageJson))
 	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
