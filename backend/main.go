@@ -56,8 +56,9 @@ func main() {
 			if err != nil {
 				log.Println(err)
 			}
-			var message Message
+			message := Message{}
 			err = json.Unmarshal(body, &message)
+
 			if err != nil {
 				log.Println(err)
 			}
