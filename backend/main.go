@@ -50,7 +50,7 @@ func main() {
 	http.HandleFunc("/message", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			body, _ := ioutil.ReadAll(r.Body)
-			var message Message
+			message := Meesage{}
 			err := json.Unmarshal(body, &message)
 			if err != nil {
 				log.Println(err)
