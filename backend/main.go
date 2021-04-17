@@ -44,14 +44,20 @@ func main() {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		messageJson, _ := json.Marshal(messageList)
+		messageJson, err := json.Marshal(messageList)
+		if err != nil {
+			log.Println(err)
+		}
 		fmt.Fprintf(w, string(messageJson))
 	})
 	http.HandleFunc("/message", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
-			body, _ := ioutil.ReadAll(r.Body)
+			body, err := ioutil.ReadAll(r.Body)
+			if err != nil {
+				log.Println(err)
+			}
 			var message Message
-			err := json.Unmarshal(body, &message)
+			err = json.Unmarshal(body, &message)
 			if err != nil {
 				log.Println(err)
 			}
