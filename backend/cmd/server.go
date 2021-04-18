@@ -9,6 +9,8 @@ import (
 	"net/http"
 )
 
+const serverAddr = "127.0.0.1:8080"
+
 var messageDao = internal.NewMessageDao()
 
 func getMessages(w http.ResponseWriter, r *http.Request) {
@@ -46,9 +48,9 @@ func postMessage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
 	http.HandleFunc("/messages", getMessages)
 	http.HandleFunc("/message", postMessage)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Printf("Listen on %s\n", serverAddr)
+	log.Fatal(http.ListenAndServe(serverAddr, nil))
 }
