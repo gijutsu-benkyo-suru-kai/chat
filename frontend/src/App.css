@@ -39,6 +39,7 @@
   width: auto;
   max-width: 200px;
   padding: 10px;
+  white-space: pre-line;
 }
 
 .my-message-wrapper > .message {
@@ -50,44 +51,13 @@
   margin: 0 5px -5px;
 }
 
-.input-bar {
+.input-form {
   width: 100%;
-  background-color: white;
-  display: flex;
-  padding: 12px;
-  flex-direction: row;
-  justify-content: flex-end;
+  line-height: 1.5;
+  height: 1.5em;
+  resize: vertical;
 }
 
-.input-wrapper {
-  border-radius: 20px;
-  background-color: #efefef;
-  box-sizing: content-box;
-  padding: 8px;
-  width: 20%;
-  min-width: 200px; 
-}
-
-.input-wrapper > input {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: 0;
-  background-color: inherit;
-  width: 100%;
-  padding: 0;
-}
-
-div.material-icons {
-  vertical-align: middle;
-  display: flex;
-  align-items: center;
-  margin: 8px;
-}
-
-div.material-icons:hover {
-  color: royalblue;
-}
-div.material-icons:active {
-  color: navy;
+.input-demo {
+  white-space: pre-line;
 }

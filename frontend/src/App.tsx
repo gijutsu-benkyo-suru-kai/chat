@@ -8,92 +8,79 @@ type Message = {
   time: number
 }
 
-type OnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => void
-type OnClickHandler = (event: React.MouseEvent) => void
-type OnKeyPressHandler = (event: React.KeyboardEvent) => void
+const defaultMessageList: Message[] = [
+  {
+    userId: 2,
+    userName: 'たろう',
+    content: 'あ〜〜〜〜〜',
+    time: 1617371835000,
+  },
+  {
+    userId: 1,
+    userName: 'じろう',
+    content: 'う〜〜〜',
+    time: 1617372835000,
+  },
+  {
+    userId: 2,
+    userName: 'たろう',
+    content: '画像が入る',
+    time: 1617373835000,
+  },
+]
 
-
-
-function MessageWrapper(props: { message: Message, myUserId: number }) {
+function MessageWrapper(props: { message: Message; myUserId: number }) {
   const time = new Date(props.message.time)
-  const wrapperClass = (props.message.userId === props.myUserId) ? "my-message-wrapper" : "message-wrapper"
-  return (
-    <div className={wrapperClass}>
-      <div className="message">{props.message.content}</div>
-      <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
-    </div>
-  )
-}
-
-function InputBar(props: {
-  value: string
-  onChange: OnChangeHandler
-  onClickSend: OnClickHandler
-  onKeyPress: OnKeyPressHandler
-}) {
-  // REF: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-  return (
-    <div className="input-bar">
-      <div className="input-wrapper">
-        <input type="text" name="text" id="text" placeholder="メッセージを入力" value={props.value} onChange={props.onChange} onKeyPress={props.onKeyPress} />
+  if (props.message.userId === props.myUserId) {
+    return (
+      <div className="my-message-wrapper">
+        <div className="message">{props.message.content}</div>
+        <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
       </div>
-      <div className="material-icons" onClick={props.onClickSend}>send</div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className="message-wrapper">
+        <div className="message">{props.message.content}</div>
+        <div className="time">{`${time.getHours()}:${time.getMinutes()}`}</div>
+      </div>
+    )
+  }
 }
 
 function App() {
   const myUserId = 1
+  const [text, setText] = useState('')
 
-  const [text, setText] = useState("")
-  const [messageList, setMessageList] = useState([
-    {
-      userId: 2,
-      userName: 'たろう',
-      content: 'あ〜〜〜〜〜',
-      time: 1617371835000,
-    },
-    {
-      userId: 1,
-      userName: 'じろう',
-      content: 'う〜〜〜',
-      time: 1617372835000,
-    },
-    {
-      userId: 2,
-      userName: 'たろう',
-      content: '画像が入る',
-      time: 1617373835000,
-    },
-  ])
+  const [messageList, setMessageList] = useState(defaultMessageList)
 
-  const pushMessage = () => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value)
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (text === '') return
     setMessageList([
       ...messageList,
       {
         userId: myUserId,
-        userName: "じろう",
         content: text,
-        time: Number(new Date())
-      }
+        time: Number(new Date()),
+        userName: 'じろう',
+      },
     ])
-    // clear input value
-    setText("")
+    setText('')
   }
-
-  const handleChangeText: OnChangeHandler = (e) => setText(e.target.value)
-  const handleClickSend: OnClickHandler = pushMessage
-  const handleEnter: OnKeyPressHandler = (e) => (e.code === "Enter") && pushMessage()
-
 
   return (
     <div className="App">
       <div className="chat-wrapper">
         {messageList.map((message, index) => (
-          <MessageWrapper key={index} message={message} myUserId={myUserId} />
+          <MessageWrapper message={message} myUserId={myUserId} key={index} />
         ))}
+        <textarea className="input-form" value={text} onChange={handleChange} />
+        <button onClick={handleClick}>送信</button>
       </div>
-      <InputBar value={text} onChange={handleChangeText} onClickSend={handleClickSend} onKeyPress={handleEnter} />
     </div>
   )
 }
