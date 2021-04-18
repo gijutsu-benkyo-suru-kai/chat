@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"name": "Frontend (React)",
+			"path": "../frontend"
+		},
+		{
+			"name": "Backend (Golang)",
+			"path": "../backend"
+		},
+		{
+			"name": "chat",
+			"path": ".."
+		}
+	]
+}
