@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 
 type Message = {
@@ -7,27 +7,6 @@ type Message = {
   content: string
   time: number
 }
-
-const defaultMessageList: Message[] = [
-  {
-    userId: 2,
-    userName: 'たろう',
-    content: 'あ〜〜〜〜〜',
-    time: 1617371835000,
-  },
-  {
-    userId: 1,
-    userName: 'じろう',
-    content: 'う〜〜〜',
-    time: 1617372835000,
-  },
-  {
-    userId: 2,
-    userName: 'たろう',
-    content: '画像が入る',
-    time: 1617373835000,
-  },
-]
 
 function MessageWrapper(props: { message: Message; myUserId: number }) {
   const time = new Date(props.message.time)
@@ -47,29 +26,39 @@ function MessageWrapper(props: { message: Message; myUserId: number }) {
     )
   }
 }
+let myUserId: number
 
 function App() {
-  const myUserId = 1
   const [text, setText] = useState('')
-
-  const [messageList, setMessageList] = useState(defaultMessageList)
+  const fetchMessages = async () => {
+    const response = await (await fetch('/messages')).json()
+    return response as Message[]
+  }
+  const [messageList, setMessageList] = useState([] as Message[])
+  useEffect(() => {
+    setInterval(() => fetchMessages().then((res) => setMessageList(res)), 1000)
+    myUserId = Math.ceil(Math.random() * 10000000)
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value)
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (text === '') return
-    setMessageList([
-      ...messageList,
-      {
-        userId: myUserId,
-        content: text,
-        time: Number(new Date()),
-        userName: 'じろう',
-      },
-    ])
+    const newMessage = {
+      userId: myUserId,
+      content: text,
+      time: Number(new Date()),
+      userName: 'じろう',
+    }
+    setMessageList([...messageList, newMessage])
     setText('')
+    const response = await fetch('/message', {
+      method: 'POST',
+      body: JSON.stringify(newMessage),
+    })
+    fetchMessages().then((res) => setMessageList(res))
   }
 
   return (
