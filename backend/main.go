@@ -10,6 +10,7 @@ import (
 )
 
 type Message struct {
+	Id       uint   `json:"id"`
 	UserId   uint   `json:"userId"`
 	UserName string `json:"userName"`
 	Content  string `json:"content"`
@@ -19,18 +20,21 @@ type Message struct {
 func main() {
 	messageList := []Message{
 		{
+			Id:       1,
 			UserId:   2,
 			UserName: "たろう",
 			Content:  "あ〜〜〜〜〜",
 			Time:     1617371835000,
 		},
 		{
+			Id:       2,
 			UserId:   1,
 			UserName: "じろう",
 			Content:  "う〜〜〜",
 			Time:     1617372835000,
 		},
 		{
+			Id:       3,
 			UserId:   2,
 			UserName: "たろう",
 			Content:  "画像が入る",
@@ -63,6 +67,7 @@ func main() {
 				log.Println(err)
 			}
 			message.Time = time.Now().Unix() * 1000
+			message.Id = uint(len(messageList)) + 1
 			messageList = append(messageList, message)
 			log.Printf("%+v\n", messageList)
 		}
