@@ -13,7 +13,7 @@ const serverAddr = "127.0.0.1:8080"
 
 var messageDao = internal.NewMessageDao()
 
-func getMessages(w http.ResponseWriter, r *http.Request) {
+func handleMessages(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(405)
 		return
@@ -26,7 +26,7 @@ func getMessages(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, string(messageJson))
 }
 
-func postMessage(w http.ResponseWriter, r *http.Request) {
+func handleMessage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -48,8 +48,8 @@ func postMessage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/messages", getMessages)
-	http.HandleFunc("/message", postMessage)
+	http.HandleFunc("/messages", handleMessages)
+	http.HandleFunc("/message", handleMessage)
 
 	log.Printf("Listen on %s\n", serverAddr)
 	log.Fatal(http.ListenAndServe(serverAddr, nil))
