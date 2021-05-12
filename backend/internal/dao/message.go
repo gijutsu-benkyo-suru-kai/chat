@@ -1,13 +1,14 @@
-package internal
+package dao
 
 import (
 	"fmt"
+	"log"
 	"time"
 )
 
 type Message struct {
-	Id       uint   `json:"-"`
-	UserId   uint   `json:"userId"`
+	Id       uint64 `json:"-"`
+	UserId   uint64 `json:"userId"`
 	UserName string `json:"userName"`
 	Content  string `json:"content"`
 	Time     int64  `json:"time"`
@@ -15,7 +16,7 @@ type Message struct {
 
 type MessageDao struct {
 	messageList []Message
-	maximumId   uint
+	maximumId   uint64
 }
 
 func NewMessageDao() *MessageDao {
@@ -48,10 +49,12 @@ func NewMessageDao() *MessageDao {
 }
 
 func (dao *MessageDao) ReadAll() *[]Message {
+	log.Printf("[READ] all records")
 	return &dao.messageList
 }
 
-func (dao *MessageDao) ReadById(id uint) (*Message, error) {
+func (dao *MessageDao) ReadById(id uint64) (*Message, error) {
+	log.Printf("[READ] message.id = %d", id)
 	for _, message := range dao.messageList {
 		if message.Id == id {
 			return &message, nil
@@ -65,10 +68,12 @@ func (dao *MessageDao) Create(message Message) error {
 	message.Id = dao.maximumId
 	message.Time = time.Now().Unix() * 1000
 	dao.messageList = append(dao.messageList, message)
+	log.Printf("[CREATE] message = %#v\n", message)
 	return nil
 }
 
-func (dao *MessageDao) Delete(id uint) error {
+func (dao *MessageDao) Delete(id uint64) error {
+	log.Printf("[DELETE] message.id = %d", id)
 	for i, message := range dao.messageList {
 		if message.Id == id {
 			dao.messageList = append(dao.messageList[:i], dao.messageList[i+1:]...)
