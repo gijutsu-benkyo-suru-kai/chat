@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    env_file: ./db/development.env
+    ports:
+      - 33060:3306
+    volumes:
+      - ./db/config:/etc/mysql/conf.d
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+  backend:
+    image: golang:alpine
+    environment: 
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+    command: /app/bin/run
+  # frontend:
+  #   image: redis
+volumes:
+  mysql_data:
+  
